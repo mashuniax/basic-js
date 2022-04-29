@@ -14,15 +14,45 @@ const { NotImplementedError } = require('../extensions/index.js');
  * 
  */
 function transform(arr) {
-  if (arr.includes('--double-next')) {
-    arr.splice(arr.indexOf('--double-next'), 1, arr[arr.indexOf('--double-next') + 1]);
-    } else if (arr.includes('--double-prev')) {
-    arr.splice(arr.indexOf('--double-prev'), 1, arr[arr.indexOf('--double-prev') - 1]);
-    } else if (arr.includes('--discard-next')) {
-    arr.splice(arr.indexOf('--discard-next'), 2)
-    } else if (arr.includes('--discard-prev')) {
-    arr.splice(arr.indexOf('--discard-prev') - 1, 2)
-    } return arr;
+
+  if (!Array.isArray(arr)) {
+    throw new Error("'arr' parameter must be an instance of the Array!");
+  }
+  if (!(arr instanceof Array)) {
+    throw new Error("'arr' parameter must be an instance of the Array!");
+  }
+  if (arr.length == 0) {
+    return [];
+  }
+  newArr = arr.slice();
+  if (newArr.includes('--double-next')) {
+    if (newArr[newArr.length - 1] == '--double-next') {
+      newArr.splice(newArr.length - 1, 1)
+    } else {
+      newArr.splice(newArr.indexOf('--double-next'), 1, newArr[newArr.indexOf('--double-next') + 1]);
+    }
+    
+    } else if (newArr.includes('--double-prev')) {
+      if (newArr[0] == '--double-prev') {
+        newArr.splice(0, 1);
+      } else {
+        newArr.splice(newArr.indexOf('--double-prev'), 1, newArr[newArr.indexOf('--double-prev') - 1]);
+      }
+    } else if (newArr.includes('--discard-next')) {
+      if (newArr[0] == '--discard-next') {
+        newArr.splice(newArr.length - 1, 1)
+      } else {
+        newArr.splice(newArr.indexOf('--discard-next'), 2)
+      }
+     
+    } else if (newArr.includes('--discard-prev')) {
+    	if (newArr[0] == '--discard-prev') {
+      	newArr.splice(0, 1)
+      } else {
+      	newArr.splice(newArr.indexOf('--discard-prev') - 1, 2)
+      }
+      
+    } return newArr;
 }
 
 module.exports = {
